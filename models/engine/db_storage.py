@@ -84,10 +84,6 @@ class DBStorage:
         """ Counts number of objects in storage matching given class
         If no class is passed, returns the count of all objects in storage
         """
-        count = 0
         if cls and cls in classes.values():
-            count = len(self.__session.query(cls).all())
-        else:
-            for key in classes.values():
-                count += len(self.__session.query(key).all())
-        return count
+            return len(self.all(cls))
+        return len(self.all())
