@@ -72,7 +72,7 @@ class FileStorage:
     def get(self, cls, id):
         """ Retrieve one object """
         if cls and id:
-            return self.__objects["{}.{}".format(cls.__name__, id)]
+            return self.__objects.get("{}.{}".format(cls.__name__, id))
         else:
             return None
 
