@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """ Status of our API """
-
-
 from models import storage
 from api.v1.views import app_views
 from flask import Flask, Blueprint
