@@ -19,4 +19,4 @@ def teardown_storage(self):
         storage.close()
 
 if __name__ == "__main__":
-    app.run(host=HOST, port=PORT, threaded=True, debug=true)
+    app.run(host=HOST, port=PORT, threaded=True, debug=True)
