@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ States view for state objects handled with RESTful API actions """
-from models import storage
-from models.state import State
 from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
+from models import storage
+from models.state import State
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
