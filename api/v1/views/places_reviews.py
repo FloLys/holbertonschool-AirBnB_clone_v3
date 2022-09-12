@@ -21,7 +21,7 @@ def reviews(place_id):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
-def post_reviews():
+def post_reviews(place_id):
     """ Handles POST request. Creates a new entry with status 201, else 400 """
     body_req = request.get_json(force=True, silent=True)
     if body_req is None:
