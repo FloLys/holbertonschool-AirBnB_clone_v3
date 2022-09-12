@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """ Handles RESTful API actions """
 from api.v1.views import app_views
-from flask import jsonify, abort, request, make_response
+from flask import jsonify, abort, request
 from models import storage
+from models.state import State
 from models.city import City
 
 
-@app_views.route('/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def cities():
     """ Returns all objects """
     all_objs = []
@@ -16,18 +17,18 @@ def cities():
     return jsonify(all_objs)
 
 
-@app_views.route('/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
 def post_cities():
     """ Handles POST request. Creates a new entry with status 201, else 400 """
     body_req = request.get_json(force=True, silent=True)
     if body_req is None:
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     if 'name' not in body_req:
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
     new_state = State(**request.get_json())
     storage.new(new_state)
     storage.save()
-    return make_response(jsonify(storage.to_dict()), 201)
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
@@ -47,7 +48,7 @@ def delete_cities(city_id):
     if obj:
         storage.delete(obj)
         storage.save()
-        return make_response(jsonify({}), 200)
+        return {}, 200
     abort(404)
 
 
@@ -60,11 +61,11 @@ def put_cities(city_id):
     if not obj:
         abort(404)
     if new_attr is None:
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     else:
         for key, value in new_attr.items():
             if key in ignore_keys:
                 continue
             setattr(obj, key, value)
         storage.save()
-        return make_response(jsonify(state.to_dict()), 200)
+        return jsonify(obj.to_dict()), 200
